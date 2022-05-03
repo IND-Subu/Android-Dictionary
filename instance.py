@@ -1,19 +1,10 @@
 import json
 import os
 import random
-import argparse
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument('d', help='to Add word meaning to the Dictionary')
-#parser.add_argument('t', help='Translate English word to Hindi meaning.')
-#parser.add_argument('q', help='Play Quiz game!')
 
-
-args = parser.parse_args()
-
-
-filename = 'instance.json'
+filename = 'data.json'
 if os.path.exists(filename):
 	with open(filename,'r') as f:
 		dictionary = json.load(f)
@@ -22,11 +13,11 @@ else:
 	dictionary = {}
 	
 	
-	
-	
 # Add to Dictionary
-#choice = input('Add new data? y/n ')
-if args.d == 'd':
+choice = input('Options: d/t/q => ')
+if choice =='exit':
+	print('Thanks for Using our App')
+elif choice == 'd':
 	while True:
 		word = input('Word: ')
 		if word == 'q':
@@ -46,7 +37,7 @@ if args.d == 'd':
 
 
 #Getting meaning from Dictionary
-elif args.d == 't':
+elif choice == 't':
 	while True:
 		word = input('Translate: ')
 		if word == 'q':
@@ -76,21 +67,24 @@ elif args.d == 't':
 
 
 # Quiz section
-elif args.d == 'q':
-	score = 0
-	while True:
+elif choice == 'q':
+	correct = 0
+	for sl in range(1,1000):
 		quiz = list(dictionary.keys())
 		rankey = random.choice(quiz)
-		print(f'The Question is {rankey}')
+		print(f'{sl} The Question is {rankey}')
 		answer = input('Your answer?  \n')
-		if answer == dictionary[rankey]:
-			score = score+10
-		elif answer == 'q':
+		if answer == 'q':
 			break
-		else:
+		elif answer != dictionary[rankey]:
 			print(f'Wrong! correct answer is "{dictionary[rankey]}"')
+			answer = input('Your answer?  \n')
+		
+		else:
+			correct = correct+1
+	sl = sl-1
 	try:
-		print("				 Score: ",score)
+		print(f"				 Score: {int((correct/sl)*100)}%")
 	except Exception as e:
 		pass
 else:
